@@ -1,0 +1,24 @@
+# OASIS_START
+# DO NOT EDIT (digest: 8591312db39b7ab3a968a04482c75f69)
+# Ignore VCS directories, you can use the same kind of rule outside 
+# OASIS_START/STOP if you want to exclude directories that contains 
+# useless stuff for the build process
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library hdfs
+"src/hdfs.cmxs": use_hdfs
+<src/hdfs.{cma,cmxa}>: oasis_library_hdfs_cclib
+"src/libhdfs_stubs.lib": oasis_library_hdfs_cclib
+"src/dllhdfs_stubs.dll": oasis_library_hdfs_cclib
+"src/libhdfs_stubs.a": oasis_library_hdfs_cclib
+"src/dllhdfs_stubs.so": oasis_library_hdfs_cclib
+<src/hdfs.{cma,cmxa}>: use_libhdfs_stubs
+# OASIS_STOP
