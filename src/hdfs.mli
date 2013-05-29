@@ -78,17 +78,29 @@ external hdfsFileIsOpenForRead : hdfsFile -> bool
 external hdfsFileIsOpenForWrite : hdfsFile -> bool
 	= "camlidl_hdfs_hdfsFileIsOpenForWrite"
 
-external hdfsDisconnect : hdfsFS -> int
+external hdfsDisconnect : hdfsFS -> unit
 	= "camlidl_hdfs_hdfsDisconnect"
 
 external hdfsOpenFile : hdfsFS -> string -> open_flags list -> int -> int -> tSize -> hdfsFile
 	= "camlidl_hdfs_hdfsOpenFile_bytecode" "camlidl_hdfs_hdfsOpenFile"
 
-external hdfsCloseFile : hdfsFS -> hdfsFile -> int
+external hdfsCloseFile : hdfsFS -> hdfsFile -> unit
 	= "camlidl_hdfs_hdfsCloseFile"
 
-external hdfsExists : hdfsFS -> string -> int
+external hdfsExists : hdfsFS -> string -> bool
 	= "camlidl_hdfs_hdfsExists"
+
+external hdfsFlush : hdfsFS -> hdfsFile -> unit
+	= "camlidl_hdfs_hdfsFlush"
+
+external hdfsHFlush : hdfsFS -> hdfsFile -> unit
+	= "camlidl_hdfs_hdfsHFlush"
+
+external hdfsHSync : hdfsFS -> hdfsFile -> unit
+	= "camlidl_hdfs_hdfsHSync"
+
+external hdfsAvailable : hdfsFS -> hdfsFile -> int
+	= "camlidl_hdfs_hdfsAvailable"
 
 external hdfsCopy : hdfsFS -> string -> hdfsFS -> string -> unit
 	= "camlidl_hdfs_hdfsCopy"
@@ -101,6 +113,12 @@ external hdfsDelete : hdfsFS -> string -> bool -> unit
 
 external hdfsRename : hdfsFS -> string -> string -> unit
 	= "camlidl_hdfs_hdfsRename"
+
+external hdfsCreateDirectory : hdfsFS -> string -> unit
+	= "camlidl_hdfs_hdfsCreateDirectory"
+
+external hdfsSetReplication : hdfsFS -> string -> int -> unit
+	= "camlidl_hdfs_hdfsSetReplication"
 
 external hdfsListDirectory : hdfsFS -> string -> hdfsFileInfo array
 	= "camlidl_hdfs_hdfsListDirectory"

@@ -245,16 +245,16 @@ value camlidl_hdfs_hdfsDisconnect(
 	value _v_fs)
 {
   hdfsFS fs; /*in*/
-  int _res;
-  value _vres;
-
+  retcode _res;
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   _res = hdfsDisconnect(fs);
-  _vres = Val_int(_res);
   camlidl_free(_ctx);
-  return _vres;
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsDisconnect", Nothing);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
 }
 
 value camlidl_hdfs_hdfsOpenFile(
@@ -282,7 +282,10 @@ value camlidl_hdfs_hdfsOpenFile(
   bufferSize = Int_val(_v_bufferSize);
   replication = Int_val(_v_replication);
   camlidl_ml2c_hdfs_tSize(_v_blocksize, &blocksize, _ctx);
+  /* begin user-supplied calling sequence */
   _res = hdfsOpenFile(fs, path, flags, bufferSize, replication, blocksize);
+  if (NULL == _res) uerror("hdfsOpenFile", _v_path);
+  /* end user-supplied calling sequence */
   _vres = camlidl_c2ml_hdfs_hdfsFile(&_res, _ctx);
   camlidl_free(_ctx);
   return _vres;
@@ -299,17 +302,17 @@ value camlidl_hdfs_hdfsCloseFile(
 {
   hdfsFS fs; /*in*/
   hdfsFile file; /*in*/
-  int _res;
-  value _vres;
-
+  retcode _res;
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
   _res = hdfsCloseFile(fs, file);
-  _vres = Val_int(_res);
   camlidl_free(_ctx);
-  return _vres;
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsCloseFile", Nothing);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
 }
 
 value camlidl_hdfs_hdfsExists(
@@ -325,9 +328,90 @@ value camlidl_hdfs_hdfsExists(
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   path = String_val(_v_path);
-  _res = hdfsExists(fs, path);
+  /* begin user-supplied calling sequence */
+  _res = (0 == hdfsExists(fs,path));
+  /* end user-supplied calling sequence */
   _vres = Val_int(_res);
   camlidl_free(_ctx);
+  return _vres;
+}
+
+value camlidl_hdfs_hdfsFlush(
+	value _v_fs,
+	value _v_file)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  retcode _res;
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  _res = hdfsFlush(fs, file);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsFlush", Nothing);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
+}
+
+value camlidl_hdfs_hdfsHFlush(
+	value _v_fs,
+	value _v_file)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  retcode _res;
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  _res = hdfsHFlush(fs, file);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsHFlush", Nothing);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
+}
+
+value camlidl_hdfs_hdfsHSync(
+	value _v_fs,
+	value _v_file)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  retcode _res;
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  _res = hdfsHSync(fs, file);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsHSync", Nothing);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
+}
+
+value camlidl_hdfs_hdfsAvailable(
+	value _v_fs,
+	value _v_file)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  int _res;
+  value _vres;
+
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  _res = hdfsAvailable(fs, file);
+  _vres = Val_int(_res);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsAvailable", Nothing);
+  /* end user-supplied deallocation sequence */
   return _vres;
 }
 
@@ -351,7 +435,7 @@ value camlidl_hdfs_hdfsCopy(
   _res = hdfsCopy(srcFS, src, dstFS, dst);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
-  if (0 != _res) uerror("hdfsCopy", _v_src);
+if (-1 == _res) uerror("hdfsCopy", _v_src);
   /* end user-supplied deallocation sequence */
   return Val_unit;
 }
@@ -376,7 +460,7 @@ value camlidl_hdfs_hdfsMove(
   _res = hdfsMove(srcFS, src, dstFS, dst);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
-  if (0 != _res) uerror("hdfsMove", _v_src);
+if (-1 == _res) uerror("hdfsMove", _v_src);
   /* end user-supplied deallocation sequence */
   return Val_unit;
 }
@@ -398,7 +482,7 @@ value camlidl_hdfs_hdfsDelete(
   _res = hdfsDelete(fs, path, recursive);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
-  if (0 != _res) uerror("hdfsDelete", _v_path);
+if (-1 == _res) uerror("hdfsDelete", _v_path);
   /* end user-supplied deallocation sequence */
   return Val_unit;
 }
@@ -420,7 +504,48 @@ value camlidl_hdfs_hdfsRename(
   _res = hdfsRename(fs, oldPath, newPath);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
-  if (0 != _res) uerror("hdfsRename", _v_oldPath);
+if (-1 == _res) uerror("hdfsRename", _v_oldPath);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
+}
+
+value camlidl_hdfs_hdfsCreateDirectory(
+	value _v_fs,
+	value _v_path)
+{
+  hdfsFS fs; /*in*/
+  char const *path; /*in*/
+  retcode _res;
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  path = String_val(_v_path);
+  _res = hdfsCreateDirectory(fs, path);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsCreateDirectory", _v_path);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
+}
+
+value camlidl_hdfs_hdfsSetReplication(
+	value _v_fs,
+	value _v_path,
+	value _v_replication)
+{
+  hdfsFS fs; /*in*/
+  char const *path; /*in*/
+  int replication; /*in*/
+  retcode _res;
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  path = String_val(_v_path);
+  replication = Int_val(_v_replication);
+  _res = hdfsSetReplication(fs, path, replication);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsSetReplication", _v_path);
   /* end user-supplied deallocation sequence */
   return Val_unit;
 }
@@ -501,7 +626,10 @@ value camlidl_hdfs_hdfsListDirectory(
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   path = String_val(_v_path);
   numEntries = &_c1;
+  /* begin user-supplied calling sequence */
   _res = hdfsListDirectory(fs, path, numEntries);
+  if (NULL == _res) uerror("hdfsListDirectory", _v_path);
+  /* end user-supplied calling sequence */
   _vres = camlidl_alloc(*numEntries, 0);
   Begin_root(_vres)
     for (_c2 = 0; _c2 < *numEntries; _c2++) {
@@ -530,7 +658,8 @@ value camlidl_hdfs_hdfsGetPathInfo(
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   path = String_val(_v_path);
   /* begin user-supplied calling sequence */
-  _res = hdfsGetPathInfo(fs, path); if (NULL == _res) uerror("hdfsGetPathInfo", _v_path);
+  _res = hdfsGetPathInfo(fs, path);
+  if (NULL == _res) uerror("hdfsGetPathInfo", _v_path);
   /* end user-supplied calling sequence */
   _vres = camlidl_c2ml_hdfs_hdfsFileInfo(&*_res, _ctx);
   camlidl_free(_ctx);

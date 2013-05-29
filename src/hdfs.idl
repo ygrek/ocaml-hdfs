@@ -22,6 +22,10 @@ quote(h,"#include <hdfs.h>\n")
     quote(c,"typedef int retcode;\n")
     typedef [errorcode] int retcode;
 
+#define STRINGIFY(x) #x
+#define RETCODE(x,arg) quote(dealloc, STRINGIFY(if (-1 == _res) uerror(#x, _v_ ## arg);))
+#define RETCODE_(x) quote(dealloc, STRINGIFY(if (-1 == _res) uerror(#x, Nothing);))
+
 quote(mlmli,"
 type params = {
   (** Force the builder to always create a new instance of the FileSystem,
@@ -138,7 +142,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      *         Even if there is an error, the resources associated with the
      *         hdfsFS will be freed.
      */
-    int hdfsDisconnect(hdfsFS fs);
+    retcode hdfsDisconnect(hdfsFS fs)
+      RETCODE_(hdfsDisconnect);
 
     /** 
      * hdfsOpenFile - Open a hdfs file in given mode.
@@ -155,8 +160,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return Returns the handle to the open file or NULL on error.
      */
     hdfsFile hdfsOpenFile(hdfsFS fs, [string] const char* path, [set] enum open_flags flags,
-                          int bufferSize, short replication, tSize blocksize);
-
+                          int bufferSize, short replication, tSize blocksize)
+      quote(call, "  _res = hdfsOpenFile(fs, path, flags, bufferSize, replication, blocksize);\n  if (NULL == _res) uerror(\"hdfsOpenFile\", _v_path);");
 
     /** 
      * hdfsCloseFile - Close an open file. 
@@ -168,15 +173,17 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      *         be freed at the end of this call, even if there was an I/O
      *         error.
      */
-    int hdfsCloseFile(hdfsFS fs, hdfsFile file);
+    retcode hdfsCloseFile(hdfsFS fs, hdfsFile file)
+      RETCODE_(hdfsCloseFile);
 
     /** 
-     * hdfsExists - Checks if a given path exsits on the filesystem 
+     * hdfsExists - Checks if a given path exists on the filesystem 
      * @param fs The configured filesystem handle.
      * @param path The path to look for
-     * @return Returns 0 on success, -1 on error.  
+     * @return Returns 0 on success, -1 on error.
      */
-    int hdfsExists(hdfsFS fs, [string] const char *path);
+     boolean hdfsExists(hdfsFS fs, [string] const char *path)
+       quote(call,"  _res = (0 == hdfsExists(fs,path));");
 
 #if 0
     /** 
@@ -238,7 +245,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      */
     tSize hdfsWrite(hdfsFS fs, hdfsFile file, const void* buffer,
                     tSize length);
-
+#endif
 
     /** 
      * hdfsWrite - Flush the data. 
@@ -246,7 +253,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param file The file handle.
      * @return Returns 0 on success, -1 on error. 
      */
-    int hdfsFlush(hdfsFS fs, hdfsFile file);
+    retcode hdfsFlush(hdfsFS fs, hdfsFile file)
+      RETCODE_(hdfsFlush);
 
 
     /**
@@ -256,7 +264,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param file file handle
      * @return 0 on success, -1 on error and sets errno
      */
-    int hdfsHFlush(hdfsFS fs, hdfsFile file);
+    retcode hdfsHFlush(hdfsFS fs, hdfsFile file)
+      RETCODE_(hdfsHFlush);
 
 
     /**
@@ -267,7 +276,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param file file handle
      * @return 0 on success, -1 on error and sets errno
      */
-    int hdfsHSync(hdfsFS fs, hdfsFile file);
+    retcode hdfsHSync(hdfsFS fs, hdfsFile file)
+      RETCODE_(hdfsHSync);
 
 
     /**
@@ -277,8 +287,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param file The file handle.
      * @return Returns available bytes; -1 on error. 
      */
-    int hdfsAvailable(hdfsFS fs, hdfsFile file);
-#endif
+    int hdfsAvailable(hdfsFS fs, hdfsFile file)
+      RETCODE_(hdfsAvailable);
 
     /**
      * hdfsCopy - Copy file from one filesystem to another.
@@ -289,8 +299,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return Returns 0 on success, -1 on error. 
      */
     retcode hdfsCopy(hdfsFS srcFS, [string] const char* src, hdfsFS dstFS, [string] const char* dst)
-      quote(dealloc, "  if (0 != _res) uerror(\"hdfsCopy\", _v_src);");
-
+      RETCODE(hdfsCopy,src);
 
     /**
      * hdfsMove - Move file from one filesystem to another.
@@ -301,7 +310,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return Returns 0 on success, -1 on error. 
      */
     retcode hdfsMove(hdfsFS srcFS, [string] const char* src, hdfsFS dstFS, [string] const char* dst)
-      quote(dealloc, "  if (0 != _res) uerror(\"hdfsMove\", _v_src);");
+      RETCODE(hdfsMove,src);
 
     /**
      * hdfsDelete - Delete file. 
@@ -313,7 +322,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return Returns 0 on success, -1 on error. 
      */
     retcode hdfsDelete(hdfsFS fs, [string] const char* path, boolean recursive)
-      quote(dealloc, "  if (0 != _res) uerror(\"hdfsDelete\", _v_path);");
+      RETCODE(hdfsDelete,path);
 
     /**
      * hdfsRename - Rename file. 
@@ -323,7 +332,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return Returns 0 on success, -1 on error. 
      */
     retcode hdfsRename(hdfsFS fs, [string] const char* oldPath, [string] const char* newPath)
-      quote(dealloc, "  if (0 != _res) uerror(\"hdfsRename\", _v_oldPath);");
+      RETCODE(hdfsRename,oldPath);
 
 #if 0
     /** 
@@ -345,7 +354,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return Returns 0 on success, -1 on error. 
      */
     int hdfsSetWorkingDirectory(hdfsFS fs, const char* path);
-
+#endif
 
     /** 
      * hdfsCreateDirectory - Make the given file and all non-existent
@@ -354,7 +363,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param path The path of the directory. 
      * @return Returns 0 on success, -1 on error. 
      */
-    int hdfsCreateDirectory(hdfsFS fs, const char* path);
+    retcode hdfsCreateDirectory(hdfsFS fs, [string] const char* path)
+      RETCODE(hdfsCreateDirectory,path);
 
 
     /** 
@@ -364,8 +374,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param path The path of the file. 
      * @return Returns 0 on success, -1 on error. 
      */
-    int hdfsSetReplication(hdfsFS fs, const char* path, int16_t replication);
-#endif
+    retcode hdfsSetReplication(hdfsFS fs, [string] const char* path, int replication)
+      RETCODE(hdfsSetReplication,path);
 
     /** 
      * hdfsFileInfo - Information about a file/directory.
@@ -393,6 +403,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * objects; NULL on error.
      */
     [size_is(*numEntries)] hdfsFileInfo *hdfsListDirectory(hdfsFS fs, [string] const char* path, [out,ignore] int *numEntries)
+      quote(call,"  _res = hdfsListDirectory(fs, path, numEntries);\n  if (NULL == _res) uerror(\"hdfsListDirectory\", _v_path);")
       quote(dealloc,"  hdfsFreeFileInfo(_res, *numEntries);");
 
 
@@ -406,7 +417,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * NULL on error.
      */
     [ref] hdfsFileInfo *hdfsGetPathInfo(hdfsFS fs, [string] const char* path)
-      quote(call,"  _res = hdfsGetPathInfo(fs, path); if (NULL == _res) uerror(\"hdfsGetPathInfo\", _v_path);")
+      quote(call,"  _res = hdfsGetPathInfo(fs, path);\n  if (NULL == _res) uerror(\"hdfsGetPathInfo\", _v_path);")
       quote(dealloc,"  hdfsFreeFileInfo(_res, 1);");
 
 #if 0
