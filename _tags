@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 8591312db39b7ab3a968a04482c75f69)
+# DO NOT EDIT (digest: d65837fd8bc50295a5ed2ef3d0d9c1ac)
 # Ignore VCS directories, you can use the same kind of rule outside 
 # OASIS_START/STOP if you want to exclude directories that contains 
 # useless stuff for the build process
@@ -21,4 +21,6 @@
 "src/libhdfs_stubs.a": oasis_library_hdfs_cclib
 "src/dllhdfs_stubs.so": oasis_library_hdfs_cclib
 <src/hdfs.{cma,cmxa}>: use_libhdfs_stubs
+<src/*.ml{,i}>: pkg_unix
+"src/hdfs_stubs.c": pkg_unix
 # OASIS_STOP
