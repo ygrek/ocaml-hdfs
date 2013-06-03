@@ -12,8 +12,6 @@ Synopsis:    libhdfs bindings
 Description:
   API to access HDFS cluster
 
-PreBuildCommand: make gen
-
 Library hdfs
   Path: src
   Modules: Hdfs
