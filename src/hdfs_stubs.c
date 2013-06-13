@@ -241,6 +241,60 @@ value camlidl_hdfs_hdfsFileIsOpenForWrite(
   return _vres;
 }
 
+value camlidl_hdfs_hdfsConfGetStr(
+	value _v_key)
+{
+  char const *key; /*in*/
+  char **val; /*out*/
+  retcode _res;
+  char *_c1;
+  value _v2;
+  value _vres;
+
+  key = String_val(_v_key);
+  val = &_c1;
+  /* begin user-supplied calling sequence */
+  _res = hdfsConfGetStr(key, val); 
+  if (0 != _res) unix_error(_res,"hdfsConfGetStr",_v_key); 
+  /* end user-supplied calling sequence */
+  if (val == NULL) {
+    _vres = Val_int(0);
+  } else {
+    _v2 = copy_string(*val);
+    Begin_root(_v2)
+      _vres = camlidl_alloc_small(1, 0);
+      Field(_vres, 0) = _v2;
+    End_roots();
+  }
+  /* begin user-supplied deallocation sequence */
+  if (NULL != *val) hdfsConfStrFree(*val);
+  /* end user-supplied deallocation sequence */
+  return _vres;
+}
+
+value camlidl_hdfs_hdfsConfGetInt(
+	value _v_key)
+{
+  char const *key; /*in*/
+  int32_t *val; /*out*/
+  retcode _res;
+  int32_t _c1;
+  value _vres;
+
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  key = String_val(_v_key);
+  val = &_c1;
+  /* begin user-supplied calling sequence */
+  *val = 0; 
+  _res = hdfsConfGetInt(key, val); 
+  if (0 != _res) unix_error(_res,"hdfsConfGetInt",_v_key); 
+  /* end user-supplied calling sequence */
+  _vres = camlidl_c2ml_hdfs_int32_t(&*val, _ctx);
+  camlidl_free(_ctx);
+  return _vres;
+}
+
 value camlidl_hdfs_hdfsDisconnect(
 	value _v_fs)
 {

@@ -78,6 +78,12 @@ external hdfsFileIsOpenForRead : hdfsFile -> bool
 external hdfsFileIsOpenForWrite : hdfsFile -> bool
 	= "camlidl_hdfs_hdfsFileIsOpenForWrite"
 
+external hdfsConfGetStr : string -> string option
+	= "camlidl_hdfs_hdfsConfGetStr"
+
+external hdfsConfGetInt : string -> int32_t
+	= "camlidl_hdfs_hdfsConfGetInt"
+
 external hdfsDisconnect : hdfsFS -> unit
 	= "camlidl_hdfs_hdfsDisconnect"
 

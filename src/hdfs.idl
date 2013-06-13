@@ -101,7 +101,6 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      */
     boolean hdfsFileIsOpenForWrite(hdfsFile file);
 
-#if 0
     /**
      * Get a configuration string.
      *
@@ -113,7 +112,10 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return         0 on success; nonzero error code otherwise.
      *                 Failure to find the key is not an error.
      */
-    int hdfsConfGetStr(const char *key, char **val);
+    retcode hdfsConfGetStr([string] const char *key, [out, unique, string*] char **val)
+      quote(call, "  _res = hdfsConfGetStr(key, val); \n\
+  if (0 != _res) unix_error(_res,\"hdfsConfGetStr\",_v_key); ")
+      quote(dealloc, "  if (NULL != *val) hdfsConfStrFree(*val);");
 
     /**
      * Get a configuration integer.
@@ -125,15 +127,11 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @return         0 on success; nonzero error code otherwise.
      *                 Failure to find the key is not an error.
      */
-    int hdfsConfGetInt(const char *key, int32_t *val);
+    retcode hdfsConfGetInt([string] const char *key, [out] int32_t *val)
+      quote(call, "  *val = 0; \n\
+  _res = hdfsConfGetInt(key, val); \n\
+  if (0 != _res) unix_error(_res,\"hdfsConfGetInt\",_v_key); ");
 
-    /**
-     * Free a configuration string found with hdfsConfGetStr. 
-     *
-     * @param val      A configuration string obtained from hdfsConfGetStr
-     */
-    void hdfsConfStrFree(char *val);
-#endif
     /** 
      * hdfsDisconnect - Disconnect from the hdfs file system.
      * Disconnect from hdfs.
