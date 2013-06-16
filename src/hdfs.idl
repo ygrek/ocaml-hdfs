@@ -183,7 +183,6 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      boolean hdfsExists(hdfsFS fs, [string] const char *path)
        quote(call,"  _res = (0 == hdfsExists(fs,path));");
 
-#if 0
     /** 
      * hdfsSeek - Seek to given offset in file. 
      * This works only for files opened in read-only mode. 
@@ -192,8 +191,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param desiredPos Offset into the file to seek into.
      * @return Returns 0 on success, -1 on error.  
      */
-    int hdfsSeek(hdfsFS fs, hdfsFile file, tOffset desiredPos); 
-
+    retcode hdfsSeek(hdfsFS fs, hdfsFile file, tOffset desiredPos)
+      RETCODE_(hdfsSeek);
 
     /** 
      * hdfsTell - Get the current offset in the file, in bytes.
@@ -201,8 +200,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param file The file handle.
      * @return Current offset, -1 on error.
      */
-    tOffset hdfsTell(hdfsFS fs, hdfsFile file);
-
+    tOffset hdfsTell(hdfsFS fs, hdfsFile file)
+      RETCODE_(hdfsTell);
 
     /** 
      * hdfsRead - Read data from an open file.
@@ -218,7 +217,16 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      *              and set errno to EINTR if data is temporarily unavailable,
      *              but we are not yet at the end of the file.
      */
-    tSize hdfsRead(hdfsFS fs, hdfsFile file, void* buffer, tSize length);
+    int hdfsRead(hdfsFS fs, hdfsFile file, [string,size_is(length)] char*  buffer, tSize length)
+      quote(call, "  _res = hdfsRead(fs, file, buffer, length);\n\
+  if (-1 == _res) { camlidl_free(_ctx); uerror(\"hdfsRead\",Nothing); }");
+
+    quote(ml, "let hdfsRead_n fs file size =\n\
+  let s = String.create size in\n\
+  let n = hdfsRead fs file s in\n\
+  if n = size then s else String.sub s 0 n\n");
+
+    quote(mli, "val hdfsRead_n : hdfsFS -> hdfsFile -> int -> string\n");
 
     /** 
      * hdfsPread - Positional read of data from an open file.
@@ -229,9 +237,17 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param length The length of the buffer.
      * @return      See hdfsRead
      */
-    tSize hdfsPread(hdfsFS fs, hdfsFile file, tOffset position,
-                    void* buffer, tSize length);
+    int hdfsPread(hdfsFS fs, hdfsFile file, tOffset position,
+                    [string,size_is(length)] char* buffer, tSize length)
+      quote(call, "  _res = hdfsPread(fs, file, position, buffer, length);\n\
+  if (-1 == _res) { camlidl_free(_ctx); uerror(\"hdfsPread\",Nothing); }");
 
+    quote(ml, "let hdfsPread_n fs file ~pos ~size =\n\
+  let s = String.create size in\n\
+  let n = hdfsPread fs file pos s in\n\
+  if n = size then s else String.sub s 0 n\n");
+
+    quote(mli, "val hdfsPread_n : hdfsFS -> hdfsFile -> pos:int -> size:int -> string\n");
 
     /** 
      * hdfsWrite - Write data into an open file.
@@ -241,9 +257,9 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param length The no. of bytes to write. 
      * @return Returns the number of bytes written, -1 on error.
      */
-    tSize hdfsWrite(hdfsFS fs, hdfsFile file, const void* buffer,
-                    tSize length);
-#endif
+    tSize hdfsWrite(hdfsFS fs, hdfsFile file, [string,size_is(length)] const char* buffer,
+                    tSize length)
+      RETCODE_(hdfsWrite); 
 
     /** 
      * hdfsWrite - Flush the data. 

@@ -390,6 +390,134 @@ value camlidl_hdfs_hdfsExists(
   return _vres;
 }
 
+value camlidl_hdfs_hdfsSeek(
+	value _v_fs,
+	value _v_file,
+	value _v_desiredPos)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  tOffset desiredPos; /*in*/
+  retcode _res;
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  camlidl_ml2c_hdfs_tOffset(_v_desiredPos, &desiredPos, _ctx);
+  _res = hdfsSeek(fs, file, desiredPos);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsSeek", Nothing);
+  /* end user-supplied deallocation sequence */
+  return Val_unit;
+}
+
+value camlidl_hdfs_hdfsTell(
+	value _v_fs,
+	value _v_file)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  tOffset _res;
+  value _vres;
+
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  _res = hdfsTell(fs, file);
+  _vres = camlidl_c2ml_hdfs_tOffset(&_res, _ctx);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsTell", Nothing);
+  /* end user-supplied deallocation sequence */
+  return _vres;
+}
+
+value camlidl_hdfs_hdfsRead(
+	value _v_fs,
+	value _v_file,
+	value _v_buffer)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  char *buffer; /*in*/
+  tSize length; /*in*/
+  int _res;
+  value _vres;
+
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  buffer = String_val(_v_buffer);
+  length = string_length(_v_buffer);
+  /* begin user-supplied calling sequence */
+  _res = hdfsRead(fs, file, buffer, length);
+  if (-1 == _res) { camlidl_free(_ctx); uerror("hdfsRead",Nothing); }
+  /* end user-supplied calling sequence */
+  _vres = Val_int(_res);
+  camlidl_free(_ctx);
+  return _vres;
+}
+
+value camlidl_hdfs_hdfsPread(
+	value _v_fs,
+	value _v_file,
+	value _v_position,
+	value _v_buffer)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  tOffset position; /*in*/
+  char *buffer; /*in*/
+  tSize length; /*in*/
+  int _res;
+  value _vres;
+
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  camlidl_ml2c_hdfs_tOffset(_v_position, &position, _ctx);
+  buffer = String_val(_v_buffer);
+  length = string_length(_v_buffer);
+  /* begin user-supplied calling sequence */
+  _res = hdfsPread(fs, file, position, buffer, length);
+  if (-1 == _res) { camlidl_free(_ctx); uerror("hdfsPread",Nothing); }
+  /* end user-supplied calling sequence */
+  _vres = Val_int(_res);
+  camlidl_free(_ctx);
+  return _vres;
+}
+
+value camlidl_hdfs_hdfsWrite(
+	value _v_fs,
+	value _v_file,
+	value _v_buffer)
+{
+  hdfsFS fs; /*in*/
+  hdfsFile file; /*in*/
+  char const *buffer; /*in*/
+  tSize length; /*in*/
+  tSize _res;
+  value _vres;
+
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
+  buffer = String_val(_v_buffer);
+  length = string_length(_v_buffer);
+  _res = hdfsWrite(fs, file, buffer, length);
+  _vres = camlidl_c2ml_hdfs_tSize(&_res, _ctx);
+  camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsWrite", Nothing);
+  /* end user-supplied deallocation sequence */
+  return _vres;
+}
+
 value camlidl_hdfs_hdfsFlush(
 	value _v_fs,
 	value _v_file)

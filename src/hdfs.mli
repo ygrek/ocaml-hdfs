@@ -96,6 +96,25 @@ external hdfsCloseFile : hdfsFS -> hdfsFile -> unit
 external hdfsExists : hdfsFS -> string -> bool
 	= "camlidl_hdfs_hdfsExists"
 
+external hdfsSeek : hdfsFS -> hdfsFile -> tOffset -> unit
+	= "camlidl_hdfs_hdfsSeek"
+
+external hdfsTell : hdfsFS -> hdfsFile -> tOffset
+	= "camlidl_hdfs_hdfsTell"
+
+external hdfsRead : hdfsFS -> hdfsFile -> string -> int
+	= "camlidl_hdfs_hdfsRead"
+
+val hdfsRead_n : hdfsFS -> hdfsFile -> int -> string
+
+external hdfsPread : hdfsFS -> hdfsFile -> tOffset -> string -> int
+	= "camlidl_hdfs_hdfsPread"
+
+val hdfsPread_n : hdfsFS -> hdfsFile -> pos:int -> size:int -> string
+
+external hdfsWrite : hdfsFS -> hdfsFile -> string -> tSize
+	= "camlidl_hdfs_hdfsWrite"
+
 external hdfsFlush : hdfsFS -> hdfsFile -> unit
 	= "camlidl_hdfs_hdfsFlush"
 
