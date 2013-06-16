@@ -33,5 +33,5 @@ Document api
   BuildTools: ocamldoc
   Format: HTML
   Index: index.html
-  XOCamlbuildPath:      .
+  XOCamlbuildPath:      src
   XOCamlbuildLibraries: hdfs
