@@ -1,32 +1,14 @@
 
 open Printf
 
-let (>>) x f = f x
-
-let collect_jars () =
-  ["/usr/lib/hadoop-hdfs";"/usr/lib/hadoop";"/usr/lib/hadoop/lib"] >>
-  List.map (fun path ->
-    Sys.readdir path >> Array.to_list >>
-    List.filter (fun s -> Filename.check_suffix s ".jar") >>
-    List.map (Filename.concat path)) >> List.concat
-
-let () =
-  (* auto setup CLASSPATH *)
-  begin match try Some (Unix.getenv "CLASSPATH") with Not_found -> None with
-  | Some _ -> () (* CLASSPATH set by user, do nothing *)
-  | None ->
-    let classpath = String.concat ":" (collect_jars ()) in
-    if classpath <> "" then Unix.putenv "CLASSPATH" classpath
-  end
-
 let error fmt = ksprintf (fun s -> prerr_endline s; exit 1) fmt
 
 let generate n =
-  let s = String.create n in
+  let b = Bytes.create n in
   for i = 0 to n - 1 do
-    s.[i] <- Char.chr (Char.code 'a' + Random.int 26)
+    Bytes.set b i (Char.chr (Char.code 'a' + Random.int 26))
   done;
-  s
+  Bytes.unsafe_to_string b
 
 let main user namenode =
   let open Hdfs in
