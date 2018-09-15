@@ -1,8 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: 55cd272e68187539cbb9504109d26f18)
-# Ignore VCS directories, you can use the same kind of rule outside 
-# OASIS_START/STOP if you want to exclude directories that contains 
+# DO NOT EDIT (digest: 9bef5490acd01c15f8b3c2379b37b98b)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
+true: annot, bin_annot
 <**/.svn>: -traverse
 <**/.svn>: not_hygienic
 ".bzr": -traverse
@@ -23,9 +24,9 @@
 <src/hdfs.{cma,cmxa}>: use_libhdfs_stubs
 "src/hdfs_stubs.c": pkg_unix
 # Executable example
-<src/example.{native,byte}>: use_hdfs
 <src/example.{native,byte}>: pkg_unix
-<src/*.ml{,i}>: use_hdfs
-<src/*.ml{,i}>: pkg_unix
+<src/example.{native,byte}>: use_hdfs
+<src/*.ml{,i,y}>: pkg_unix
+<src/*.ml{,i,y}>: use_hdfs
 # OASIS_STOP
 true: debug, annot

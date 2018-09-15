@@ -1,4 +1,4 @@
-OASISFormat: 0.3
+OASISFormat: 0.4
 Name:        hdfs
 Version:     0.1
 License:     LGPL-2.1 with OCaml linking exception
@@ -6,7 +6,7 @@ Authors:     ygrek
 Copyrights:  (C) 2013 ygrek
 Homepage:    http://hdfs.forge.ocamlcore.org/
 BuildTools:  ocamlbuild, camlidl
-Plugins:     DevFiles (0.3), META (0.3)
+Plugins:     DevFiles (0.4), META (0.4)
 
 Synopsis:    libhdfs bindings
 Description:
@@ -28,7 +28,7 @@ Executable example
 
 Document api
   Title: API reference for hdfs
-  Type: ocamlbuild (0.3)
+  Type: ocamlbuild (0.4)
   Authors: ygrek
   BuildTools: ocamldoc
   Format: HTML
