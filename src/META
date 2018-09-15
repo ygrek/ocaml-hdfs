@@ -1,8 +1,8 @@
 # OASIS_START
-# DO NOT EDIT (digest: cc5c3521745342cc91e92e0f82d91a3b)
+# DO NOT EDIT (digest: d5cffc6831b673222d94a73366afa7e4)
 version = "0.1"
 description = "libhdfs bindings"
-requires = "unix"
+requires = "unix camlidl"
 archive(byte) = "hdfs.cma"
 archive(byte, plugin) = "hdfs.cma"
 archive(native) = "hdfs.cmxa"

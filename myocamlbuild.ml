@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: 76ca3ed3c7a6b989b7fe4f1ca2d34259) *)
+(* DO NOT EDIT (digest: e059f1f43e1bb9095662da13f1493c6a) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -884,33 +884,9 @@ let package_default =
      flags =
        [
           (["oasis_library_hdfs_cclib"; "link"],
-            [
-               (OASISExpr.EBool true,
-                 S
-                   [
-                      A "-cclib";
-                      A "-lhdfs";
-                      A "-cclib";
-                      A "-L/usr/lib/ocaml";
-                      A "-cclib";
-                      A "-lcamlidl";
-                      A "-cclib";
-                      A
-                        "-Wl,-rpath=/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server"
-                   ])
-            ]);
+            [(OASISExpr.EBool true, S [A "-cclib"; A "-lhdfs"])]);
           (["oasis_library_hdfs_cclib"; "ocamlmklib"; "c"],
-            [
-               (OASISExpr.EBool true,
-                 S
-                   [
-                      A "-lhdfs";
-                      A "-L/usr/lib/ocaml";
-                      A "-lcamlidl";
-                      A
-                        "-Wl,-rpath=/usr/lib/jvm/java-6-sun-1.6.0.26/jre/lib/amd64/server"
-                   ])
-            ])
+            [(OASISExpr.EBool true, S [A "-lhdfs"])])
        ];
      includes = []
   }
@@ -920,6 +896,18 @@ let conf = {MyOCamlbuildFindlib.no_automatic_syntax = false}
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default conf package_default;;
 
-# 924 "myocamlbuild.ml"
+# 900 "myocamlbuild.ml"
 (* OASIS_STOP *)
-Ocamlbuild_plugin.dispatch dispatch_default;;
+
+(*
+  this is needed because -lcamlidl is not embedded in cma provided by camlidl itself,
+  so we have to insert reference to it manually
+  NB path to find -lcamlidl is taken care of by BuildDepends on camlidl (even though we dont use the cma)
+*)
+let my_dispatch = function
+| Ocamlbuild_plugin.After_rules ->
+  flag ["oasis_library_hdfs_cclib"; "link"] (S [A "-cclib"; A "-lcamlidl"])
+| _ -> ()
+;;
+
+Ocamlbuild_plugin.dispatch (MyOCamlbuildBase.dispatch_combine [dispatch_default; my_dispatch]);;
