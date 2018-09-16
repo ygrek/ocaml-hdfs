@@ -18,8 +18,11 @@ let main user namenode =
   (* Get a handle to the HDFS cluster. *)
   let fs = hdfsConnect { default with namenode; user; } in
 
+  let cwd = hdfsGetWorkingDirectory fs in
+  print_endline ("cwd " ^ cwd);
+
   (* Make a directory /ctest *)
-  let dir = "ctest" in
+  let dir = Filename.concat cwd "ctest" in (* NB using relative path here causes NPE in HdfsFileStatus.makeQualified *)
   hdfsCreateDirectory fs dir;
 
   (* What we just created better be a directory *)
