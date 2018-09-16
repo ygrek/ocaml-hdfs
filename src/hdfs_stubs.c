@@ -691,6 +691,22 @@ if (-1 == _res) uerror("hdfsRename", _v_oldPath);
   return Val_unit;
 }
 
+value camlidl_hdfs_hdfsSetWorkingDirectory(
+	value _v_fs,
+	value _v_path)
+{
+  hdfsFS fs; /*in*/
+  char const *path; /*in*/
+  retcode _res;
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  path = String_val(_v_path);
+  _res = hdfsSetWorkingDirectory(fs, path);
+  camlidl_free(_ctx);
+  return Val_unit;
+}
+
 value camlidl_hdfs_hdfsCreateDirectory(
 	value _v_fs,
 	value _v_path)

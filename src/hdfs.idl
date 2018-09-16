@@ -62,6 +62,8 @@ type params = {
 
 external hdfsConnect : params -> hdfsFS = \"ml_hdfs_connect\"
 
+external hdfsGetWorkingDirectory : hdfsFS -> string = \"ml_hdfs_getwd\"
+
 \n")
 
 quote(ml,"  let default = {
@@ -348,18 +350,6 @@ quote(c,"#include \"hdfs_connect.h\"\n")
     retcode hdfsRename(hdfsFS fs, [string] const char* oldPath, [string] const char* newPath)
       RETCODE(hdfsRename,oldPath);
 
-#if 0
-    /** 
-     * hdfsGetWorkingDirectory - Get the current working directory for
-     * the given filesystem.
-     * @param fs The configured filesystem handle.
-     * @param buffer The user-buffer to copy path of cwd into. 
-     * @param bufferSize The length of user-buffer.
-     * @return Returns buffer, NULL on error.
-     */
-    char* hdfsGetWorkingDirectory(hdfsFS fs, char *buffer, size_t bufferSize);
-
-
     /** 
      * hdfsSetWorkingDirectory - Set the working directory. All relative
      * paths will be resolved relative to it.
@@ -367,8 +357,7 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param path The path of the new 'cwd'. 
      * @return Returns 0 on success, -1 on error. 
      */
-    int hdfsSetWorkingDirectory(hdfsFS fs, const char* path);
-#endif
+    retcode hdfsSetWorkingDirectory(hdfsFS fs, [string]const char* path);
 
     /** 
      * hdfsCreateDirectory - Make the given file and all non-existent

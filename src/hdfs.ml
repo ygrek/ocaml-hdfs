@@ -68,6 +68,8 @@ type params = {
 
 external hdfsConnect : params -> hdfsFS = "ml_hdfs_connect"
 
+external hdfsGetWorkingDirectory : hdfsFS -> string = "ml_hdfs_getwd"
+
 
 
   let default = {
@@ -150,6 +152,9 @@ external hdfsDelete : hdfsFS -> string -> bool -> unit
 
 external hdfsRename : hdfsFS -> string -> string -> unit
 	= "camlidl_hdfs_hdfsRename"
+
+external hdfsSetWorkingDirectory : hdfsFS -> string -> unit
+	= "camlidl_hdfs_hdfsSetWorkingDirectory"
 
 external hdfsCreateDirectory : hdfsFS -> string -> unit
 	= "camlidl_hdfs_hdfsCreateDirectory"

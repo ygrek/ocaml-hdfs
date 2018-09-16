@@ -2,7 +2,7 @@
 #define Val_none Val_int(0)
 #define Some_val(v) Field(v,0)
 
-CAMLprim value ml_hdfs_connect(value v_bld)
+value ml_hdfs_connect(value v_bld)
 {
   value _vres;
 
@@ -34,6 +34,32 @@ CAMLprim value ml_hdfs_connect(value v_bld)
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   _vres = camlidl_c2ml_hdfs_hdfsFS(&fs, _ctx);
+  camlidl_free(_ctx);
+  return _vres;
+}
+
+/** 
+ * hdfsGetWorkingDirectory - Get the current working directory for
+ * the given filesystem.
+ * @param fs The configured filesystem handle.
+ * @param buffer The user-buffer to copy path of cwd into. 
+ * @param bufferSize The length of user-buffer.
+ * @return Returns buffer, NULL on error.
+[string]char* hdfsGetWorkingDirectory(hdfsFS fs, [string,size_is(bufferSize)] char *buffer, tSize bufferSize);
+ */
+
+value ml_hdfs_getwd(value _v_fs)
+{
+  hdfsFS fs; /*in*/
+  char *_res;
+  char buffer[2048];
+  value _vres;
+
+  struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
+  camlidl_ctx _ctx = &_ctxs;
+  camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
+  _res = hdfsGetWorkingDirectory(fs, buffer, 2040);
+  _vres = copy_string(_res);
   camlidl_free(_ctx);
   return _vres;
 }
