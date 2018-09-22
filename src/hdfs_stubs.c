@@ -704,6 +704,9 @@ value camlidl_hdfs_hdfsSetWorkingDirectory(
   path = String_val(_v_path);
   _res = hdfsSetWorkingDirectory(fs, path);
   camlidl_free(_ctx);
+  /* begin user-supplied deallocation sequence */
+if (-1 == _res) uerror("hdfsSetWorkingDirectory", _v_path);
+  /* end user-supplied deallocation sequence */
   return Val_unit;
 }
 

@@ -357,7 +357,8 @@ quote(c,"#include \"hdfs_connect.h\"\n")
      * @param path The path of the new 'cwd'. 
      * @return Returns 0 on success, -1 on error. 
      */
-    retcode hdfsSetWorkingDirectory(hdfsFS fs, [string]const char* path);
+    retcode hdfsSetWorkingDirectory(hdfsFS fs, [string]const char* path)
+      RETCODE(hdfsSetWorkingDirectory, path);
 
     /** 
      * hdfsCreateDirectory - Make the given file and all non-existent
