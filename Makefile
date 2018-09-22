@@ -43,3 +43,12 @@ configure:
 .PHONY: gen
 gen:
 	camlidl -no-include src/hdfs.idl
+
+VERSION=$(shell oasis query version)
+NAME=ocaml-hdfs-$(VERSION)
+
+.PHONY: release
+release:
+	git tag -a -m $(VERSION) v$(VERSION)
+	git archive --prefix=$(NAME)/ v$(VERSION) | gzip > $(NAME).tar.gz
+	gpg -a -b $(NAME).tar.gz

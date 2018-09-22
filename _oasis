@@ -4,7 +4,7 @@ Version:     0.1
 License:     LGPL-2.1 with OCaml linking exception
 Authors:     ygrek
 Copyrights:  (C) 2013 ygrek
-Homepage:    http://hdfs.forge.ocamlcore.org/
+Homepage:    http://ygrek.org.ua/p/ocaml-hdfs/
 BuildTools:  ocamlbuild, camlidl
 Plugins:     DevFiles (0.4), META (0.4)
 # ocamlbuild prior to 4.03 doesn't setup include paths correctly when building C stubs
