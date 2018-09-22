@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: e059f1f43e1bb9095662da13f1493c6a) *)
+(* DO NOT EDIT (digest: b3e5fd3e451b9a550681992aeec662fd) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -880,7 +880,7 @@ open Ocamlbuild_plugin;;
 let package_default =
   {
      MyOCamlbuildBase.lib_ocaml = [("hdfs", ["src"], [])];
-     lib_c = [("hdfs", "src", ["src/hdfs_connect.h"])];
+     lib_c = [("hdfs", "src", [])];
      flags =
        [
           (["oasis_library_hdfs_cclib"; "link"],

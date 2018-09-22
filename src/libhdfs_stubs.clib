@@ -1,4 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 64fd7b9ad7179bf09a67d0f52cb1ea6b)
+# DO NOT EDIT (digest: 214f6f80a4a1442573d9ecd5fa0d701d)
 hdfs_stubs.o
+hdfs_stubs_manual.o
 # OASIS_STOP

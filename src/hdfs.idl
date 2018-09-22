@@ -85,8 +85,6 @@ quote(mli," val default : params\n")
     struct hdfsFile_internal;
     typedef [abstract] struct hdfsFile_internal* hdfsFile;
 
-quote(c,"#include \"hdfs_connect.h\"\n")
-
     /**
      * Determine if a file is open for read.
      *

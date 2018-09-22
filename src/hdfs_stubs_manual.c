@@ -1,6 +1,16 @@
 
+#include <caml/alloc.h>
+#include <caml/unixsupport.h>
+
+#include <caml/camlidlruntime.h>
+
+#include <hdfs.h>
+
 #define Val_none Val_int(0)
 #define Some_val(v) Field(v,0)
+
+void camlidl_ml2c_hdfs_hdfsFS(value _v1, hdfsFS * _c2, camlidl_ctx _ctx);
+value camlidl_c2ml_hdfs_hdfsFS(hdfsFS * _c2, camlidl_ctx _ctx);
 
 value ml_hdfs_connect(value v_bld)
 {

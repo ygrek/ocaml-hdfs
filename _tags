@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 79054892020b5970055051bae00b00cc)
+# DO NOT EDIT (digest: 2254f514378bc5fa264aa551b52295a7)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
@@ -24,6 +24,8 @@ true: annot, bin_annot
 <src/hdfs.{cma,cmxa}>: use_libhdfs_stubs
 "src/hdfs_stubs.c": package(camlidl)
 "src/hdfs_stubs.c": package(unix)
+"src/hdfs_stubs_manual.c": package(camlidl)
+"src/hdfs_stubs_manual.c": package(unix)
 # Executable example
 <src/example.{native,byte}>: package(camlidl)
 <src/example.{native,byte}>: package(unix)

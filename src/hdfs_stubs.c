@@ -207,8 +207,6 @@ value _v1;
   return _v1;
 }
 
-#include "hdfs_connect.h"
-
 value camlidl_hdfs_hdfsFileIsOpenForRead(
 	value _v_file)
 {

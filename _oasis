@@ -19,7 +19,7 @@ Library hdfs
   Modules: Hdfs
   BuildDepends: unix, camlidl
   CClib: -lhdfs
-  CSources: hdfs_stubs.c, hdfs_connect.h
+  CSources: hdfs_stubs.c, hdfs_stubs_manual.c
 
 Executable example
   Path: src
