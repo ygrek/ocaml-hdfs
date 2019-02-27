@@ -11,6 +11,8 @@ how to find the header and library files, e.g. with gcc on Linux something like 
     export C_INCLUDE_PATH=/opt/hadoop/include:$C_INCLUDE_PATH
     make
 
+This library will use hdfs pkg-config files when available (but not all hadoop packages provide those) and above configuration will not be necessary.
+Runtime configuration (below) might be required anyway.
 
 How to run
 ----------

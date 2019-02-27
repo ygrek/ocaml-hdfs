@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: b3e5fd3e451b9a550681992aeec662fd) *)
+(* DO NOT EDIT (digest: 16b5f369c329a226e9af1beb7a0e4c96) *)
 module OASISGettext = struct
 (* # 22 "src/oasis/OASISGettext.ml" *)
 
@@ -881,13 +881,7 @@ let package_default =
   {
      MyOCamlbuildBase.lib_ocaml = [("hdfs", ["src"], [])];
      lib_c = [("hdfs", "src", [])];
-     flags =
-       [
-          (["oasis_library_hdfs_cclib"; "link"],
-            [(OASISExpr.EBool true, S [A "-cclib"; A "-lhdfs"])]);
-          (["oasis_library_hdfs_cclib"; "ocamlmklib"; "c"],
-            [(OASISExpr.EBool true, S [A "-lhdfs"])])
-       ];
+     flags = [];
      includes = []
   }
   ;;
@@ -896,8 +890,21 @@ let conf = {MyOCamlbuildFindlib.no_automatic_syntax = false}
 
 let dispatch_default = MyOCamlbuildBase.dispatch_default conf package_default;;
 
-# 900 "myocamlbuild.ml"
+# 894 "myocamlbuild.ml"
 (* OASIS_STOP *)
+
+let (cflags,libs) =
+  try
+    let cflags = String.trim (run_and_read "pkg-config --cflags hdfs") in
+    let libs = String.trim (run_and_read "pkg-config --libs hdfs") in
+    Printf.printf "I: [pkg-config] additional compiler flags : %s\n%!" cflags;
+    Printf.printf "I: [pkg-config] additional linker flags : %s\n%!" libs;
+    cflags, libs
+  with
+    exn ->
+      prerr_endline (Printexc.to_string exn);
+      prerr_endline "W: pkg-config hdfs lookup failed, proceeding nonetheless in case hdfs headers and libraries are present in search paths";
+      "","-lhdfs"
 
 (*
   this is needed because -lcamlidl is not embedded in cma provided by camlidl itself,
@@ -906,7 +913,9 @@ let dispatch_default = MyOCamlbuildBase.dispatch_default conf package_default;;
 *)
 let my_dispatch = function
 | Ocamlbuild_plugin.After_rules ->
-  flag ["oasis_library_hdfs_cclib"; "link"] (S [A "-cclib"; A "-lcamlidl"])
+  flag ["c"; "compile"] & S[A"-ccopt"; A cflags];
+  flag ["ocamlmklib";"c"] & S[A libs];
+  flag ["ocaml"; "link"; "library"] (S [A "-cclib"; A "-lcamlidl"; A"-cclib"; A libs])
 | _ -> ()
 ;;
 
