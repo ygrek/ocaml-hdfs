@@ -110,21 +110,21 @@ external hdfsSeek : hdfsFS -> hdfsFile -> tOffset -> unit
 external hdfsTell : hdfsFS -> hdfsFile -> tOffset
 	= "camlidl_hdfs_hdfsTell"
 
-external hdfsRead : hdfsFS -> hdfsFile -> string -> int
+external hdfsRead : hdfsFS -> hdfsFile -> bytes -> int
 	= "camlidl_hdfs_hdfsRead"
 
 let hdfsRead_n fs file size =
-  let s = String.create size in
+  let s = Bytes.create size in
   let n = hdfsRead fs file s in
-  if n = size then s else String.sub s 0 n
+  if n = size then Bytes.unsafe_to_string s else Bytes.sub_string s 0 n
 
-external hdfsPread : hdfsFS -> hdfsFile -> tOffset -> string -> int
+external hdfsPread : hdfsFS -> hdfsFile -> tOffset -> bytes -> int
 	= "camlidl_hdfs_hdfsPread"
 
 let hdfsPread_n fs file ~pos ~size =
-  let s = String.create size in
+  let s = Bytes.create size in
   let n = hdfsPread fs file pos s in
-  if n = size then s else String.sub s 0 n
+  if n = size then Bytes.unsafe_to_string s else Bytes.sub_string s 0 n
 
 external hdfsWrite : hdfsFS -> hdfsFile -> string -> tSize
 	= "camlidl_hdfs_hdfsWrite"

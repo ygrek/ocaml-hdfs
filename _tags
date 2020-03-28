@@ -29,5 +29,5 @@ true: annot, bin_annot
 <src/*.ml{,i,y}>: package(unix)
 <src/*.ml{,i,y}>: use_hdfs
 # OASIS_STOP
-true: debug, unsafe_string
+true: debug
 "src/hdfs.cmxs": package(camlidl)

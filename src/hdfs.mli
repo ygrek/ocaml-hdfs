@@ -104,12 +104,12 @@ external hdfsSeek : hdfsFS -> hdfsFile -> tOffset -> unit
 external hdfsTell : hdfsFS -> hdfsFile -> tOffset
 	= "camlidl_hdfs_hdfsTell"
 
-external hdfsRead : hdfsFS -> hdfsFile -> string -> int
+external hdfsRead : hdfsFS -> hdfsFile -> bytes -> int
 	= "camlidl_hdfs_hdfsRead"
 
 val hdfsRead_n : hdfsFS -> hdfsFile -> int -> string
 
-external hdfsPread : hdfsFS -> hdfsFile -> tOffset -> string -> int
+external hdfsPread : hdfsFS -> hdfsFile -> tOffset -> bytes -> int
 	= "camlidl_hdfs_hdfsPread"
 
 val hdfsPread_n : hdfsFS -> hdfsFile -> pos:int -> size:int -> string
