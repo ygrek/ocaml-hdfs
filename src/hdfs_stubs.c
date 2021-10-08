@@ -83,7 +83,7 @@ value camlidl_c2ml_hdfs_enum_tObjectKind(int _c1)
   switch(_c1) {
   case kObjectKindFile: _v2 = Val_int(0); break;
   case kObjectKindDirectory: _v2 = Val_int(1); break;
-  default: invalid_argument("enum tObjectKind: bad enum tObjectKind value");
+  default: caml_invalid_argument("enum tObjectKind: bad enum tObjectKind value");
   }
   return _v2;
 }
@@ -156,7 +156,7 @@ value camlidl_c2ml_hdfs_enum_open_flags(int _c1)
   case O_RDONLY: _v2 = Val_int(0); break;
   case O_WRONLY: _v2 = Val_int(1); break;
   case O_APPEND: _v2 = Val_int(2); break;
-  default: invalid_argument("enum open_flags: bad enum open_flags value");
+  default: caml_invalid_argument("enum open_flags: bad enum open_flags value");
   }
   return _v2;
 }
@@ -258,7 +258,7 @@ value camlidl_hdfs_hdfsConfGetStr(
   if (val == NULL) {
     _vres = Val_int(0);
   } else {
-    _v2 = copy_string(*val);
+    _v2 = caml_copy_string(*val);
     Begin_root(_v2)
       _vres = camlidl_alloc_small(1, 0);
       Field(_vres, 0) = _v2;
@@ -330,7 +330,7 @@ value camlidl_hdfs_hdfsOpenFile(
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   path = String_val(_v_path);
-  flags = convert_flag_list(_v_flags, camlidl_transl_table_hdfs_enum_2);
+  flags = caml_convert_flag_list(_v_flags, camlidl_transl_table_hdfs_enum_2);
   bufferSize = Int_val(_v_bufferSize);
   replication = Int_val(_v_replication);
   camlidl_ml2c_hdfs_tSize(_v_blocksize, &blocksize, _ctx);
@@ -449,7 +449,7 @@ value camlidl_hdfs_hdfsRead(
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
   buffer = String_val(_v_buffer);
-  length = string_length(_v_buffer);
+  length = caml_string_length(_v_buffer);
   /* begin user-supplied calling sequence */
   _res = hdfsRead(fs, file, buffer, length);
   if (-1 == _res) { camlidl_free(_ctx); uerror("hdfsRead",Nothing); }
@@ -479,7 +479,7 @@ value camlidl_hdfs_hdfsPread(
   camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
   camlidl_ml2c_hdfs_tOffset(_v_position, &position, _ctx);
   buffer = String_val(_v_buffer);
-  length = string_length(_v_buffer);
+  length = caml_string_length(_v_buffer);
   /* begin user-supplied calling sequence */
   _res = hdfsPread(fs, file, position, buffer, length);
   if (-1 == _res) { camlidl_free(_ctx); uerror("hdfsPread",Nothing); }
@@ -506,7 +506,7 @@ value camlidl_hdfs_hdfsWrite(
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
   buffer = String_val(_v_buffer);
-  length = string_length(_v_buffer);
+  length = caml_string_length(_v_buffer);
   _res = hdfsWrite(fs, file, buffer, length);
   _vres = camlidl_c2ml_hdfs_tSize(&_res, _ctx);
   camlidl_free(_ctx);
@@ -790,13 +790,13 @@ value _v3[10];
   memset(_v3, 0, 10 * sizeof(value));
   Begin_roots_block(_v3, 10)
     _v3[0] = camlidl_c2ml_hdfs_enum_tObjectKind((*_c2).mKind);
-    _v3[1] = copy_string((*_c2).mName);
+    _v3[1] = caml_copy_string((*_c2).mName);
     _v3[2] = camlidl_c2ml_hdfs_tTime(&(*_c2).mLastMod, _ctx);
     _v3[3] = camlidl_c2ml_hdfs_tOffset(&(*_c2).mSize, _ctx);
     _v3[4] = Val_int((*_c2).mReplication);
     _v3[5] = camlidl_c2ml_hdfs_tOffset(&(*_c2).mBlockSize, _ctx);
-    _v3[6] = copy_string((*_c2).mOwner);
-    _v3[7] = copy_string((*_c2).mGroup);
+    _v3[6] = caml_copy_string((*_c2).mOwner);
+    _v3[7] = caml_copy_string((*_c2).mGroup);
     _v3[8] = Val_int((*_c2).mPermissions);
     _v3[9] = camlidl_c2ml_hdfs_tTime(&(*_c2).mLastAccess, _ctx);
     _v1 = camlidl_alloc_small(10, 0);
@@ -833,7 +833,7 @@ value camlidl_hdfs_hdfsListDirectory(
   Begin_root(_vres)
     for (_c2 = 0; _c2 < *numEntries; _c2++) {
       _v3 = camlidl_c2ml_hdfs_hdfsFileInfo(&_res[_c2], _ctx);
-      modify(&Field(_vres, _c2), _v3);
+      caml_modify(&Field(_vres, _c2), _v3);
     }
   End_roots()
   camlidl_free(_ctx);
