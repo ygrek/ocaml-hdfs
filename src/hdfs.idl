@@ -222,9 +222,9 @@ quote(mli," val default : params\n")
   if (-1 == _res) { camlidl_free(_ctx); uerror(\"hdfsRead\",Nothing); }");
 
     quote(ml, "let hdfsRead_n fs file size =\n\
-  let s = String.create size in\n\
+  let s = Bytes.create size in\n\
   let n = hdfsRead fs file s in\n\
-  if n = size then s else String.sub s 0 n\n");
+  if n = size then Bytes.unsafe_to_string s else Bytes.sub_string s 0 n\n");
 
     quote(mli, "val hdfsRead_n : hdfsFS -> hdfsFile -> int -> string\n");
 
@@ -243,9 +243,9 @@ quote(mli," val default : params\n")
   if (-1 == _res) { camlidl_free(_ctx); uerror(\"hdfsPread\",Nothing); }");
 
     quote(ml, "let hdfsPread_n fs file ~pos ~size =\n\
-  let s = String.create size in\n\
+  let s = Bytes.create size in\n\
   let n = hdfsPread fs file pos s in\n\
-  if n = size then s else String.sub s 0 n\n");
+  if n = size then Bytes.unsafe_to_string s else Bytes.sub_string s 0 n\n");
 
     quote(mli, "val hdfsPread_n : hdfsFS -> hdfsFile -> pos:int -> size:int -> string\n");
 
