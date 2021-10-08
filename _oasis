@@ -1,6 +1,6 @@
 OASISFormat: 0.4
 Name:        hdfs
-Version:     0.3
+Version:     0.4
 License:     LGPL-2.1 with OCaml linking exception
 Authors:     ygrek
 Copyrights:  (C) 2013 ygrek
