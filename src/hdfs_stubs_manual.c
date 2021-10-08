@@ -6,8 +6,13 @@
 
 #include <hdfs.h>
 
+#ifndef Val_none
 #define Val_none Val_int(0)
+#endif
+
+#ifndef Some_val
 #define Some_val(v) Field(v,0)
+#endif
 
 void camlidl_ml2c_hdfs_hdfsFS(value _v1, hdfsFS * _c2, camlidl_ctx _ctx);
 value camlidl_c2ml_hdfs_hdfsFS(hdfsFS * _c2, camlidl_ctx _ctx);
