@@ -9,7 +9,7 @@ authors: ["ygrek"]
 tags: [ "org:ygrek" "clib:hdfs"  ]
 build: [
   ["ocaml" "setup.ml" "-configure" "--prefix" prefix]
-  ["ocaml" "setup.ml" "-build"]
+  [make]
   ["ocaml" "setup.ml" "-doc"] {with-doc}
 ]
 install: ["ocaml" "setup.ml" "-install"]

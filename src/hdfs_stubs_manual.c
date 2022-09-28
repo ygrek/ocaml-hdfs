@@ -74,7 +74,7 @@ value ml_hdfs_getwd(value _v_fs)
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   _res = hdfsGetWorkingDirectory(fs, buffer, 2040);
-  _vres = copy_string(_res);
+  _vres = caml_copy_string(_res);
   camlidl_free(_ctx);
   return _vres;
 }
