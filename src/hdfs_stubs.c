@@ -249,7 +249,7 @@ value camlidl_hdfs_hdfsConfGetStr(
   value _v2;
   value _vres;
 
-  key = String_val(_v_key);
+  key = (char const *) String_val(_v_key);
   val = &_c1;
   /* begin user-supplied calling sequence */
   _res = hdfsConfGetStr(key, val); 
@@ -281,7 +281,7 @@ value camlidl_hdfs_hdfsConfGetInt(
 
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
-  key = String_val(_v_key);
+  key = (char const *) String_val(_v_key);
   val = &_c1;
   /* begin user-supplied calling sequence */
   *val = 0; 
@@ -329,7 +329,7 @@ value camlidl_hdfs_hdfsOpenFile(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   flags = caml_convert_flag_list(_v_flags, camlidl_transl_table_hdfs_enum_2);
   bufferSize = Int_val(_v_bufferSize);
   replication = Int_val(_v_replication);
@@ -379,7 +379,7 @@ value camlidl_hdfs_hdfsExists(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   /* begin user-supplied calling sequence */
   _res = (0 == hdfsExists(fs,path));
   /* end user-supplied calling sequence */
@@ -448,7 +448,7 @@ value camlidl_hdfs_hdfsRead(
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
-  buffer = String_val(_v_buffer);
+  buffer = (char *) String_val(_v_buffer);
   length = caml_string_length(_v_buffer);
   /* begin user-supplied calling sequence */
   _res = hdfsRead(fs, file, buffer, length);
@@ -478,7 +478,7 @@ value camlidl_hdfs_hdfsPread(
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
   camlidl_ml2c_hdfs_tOffset(_v_position, &position, _ctx);
-  buffer = String_val(_v_buffer);
+  buffer = (char *) String_val(_v_buffer);
   length = caml_string_length(_v_buffer);
   /* begin user-supplied calling sequence */
   _res = hdfsPread(fs, file, position, buffer, length);
@@ -505,7 +505,7 @@ value camlidl_hdfs_hdfsWrite(
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
   camlidl_ml2c_hdfs_hdfsFile(_v_file, &file, _ctx);
-  buffer = String_val(_v_buffer);
+  buffer = (char const *) String_val(_v_buffer);
   length = caml_string_length(_v_buffer);
   _res = hdfsWrite(fs, file, buffer, length);
   _vres = camlidl_c2ml_hdfs_tSize(&_res, _ctx);
@@ -609,9 +609,9 @@ value camlidl_hdfs_hdfsCopy(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_srcFS, &srcFS, _ctx);
-  src = String_val(_v_src);
+  src = (char const *) String_val(_v_src);
   camlidl_ml2c_hdfs_hdfsFS(_v_dstFS, &dstFS, _ctx);
-  dst = String_val(_v_dst);
+  dst = (char const *) String_val(_v_dst);
   _res = hdfsCopy(srcFS, src, dstFS, dst);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
@@ -634,9 +634,9 @@ value camlidl_hdfs_hdfsMove(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_srcFS, &srcFS, _ctx);
-  src = String_val(_v_src);
+  src = (char const *) String_val(_v_src);
   camlidl_ml2c_hdfs_hdfsFS(_v_dstFS, &dstFS, _ctx);
-  dst = String_val(_v_dst);
+  dst = (char const *) String_val(_v_dst);
   _res = hdfsMove(srcFS, src, dstFS, dst);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
@@ -657,7 +657,7 @@ value camlidl_hdfs_hdfsDelete(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   recursive = Int_val(_v_recursive);
   _res = hdfsDelete(fs, path, recursive);
   camlidl_free(_ctx);
@@ -679,8 +679,8 @@ value camlidl_hdfs_hdfsRename(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  oldPath = String_val(_v_oldPath);
-  newPath = String_val(_v_newPath);
+  oldPath = (char const *) String_val(_v_oldPath);
+  newPath = (char const *) String_val(_v_newPath);
   _res = hdfsRename(fs, oldPath, newPath);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
@@ -699,7 +699,7 @@ value camlidl_hdfs_hdfsSetWorkingDirectory(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   _res = hdfsSetWorkingDirectory(fs, path);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
@@ -718,7 +718,7 @@ value camlidl_hdfs_hdfsCreateDirectory(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   _res = hdfsCreateDirectory(fs, path);
   camlidl_free(_ctx);
   /* begin user-supplied deallocation sequence */
@@ -739,7 +739,7 @@ value camlidl_hdfs_hdfsSetReplication(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   replication = Int_val(_v_replication);
   _res = hdfsSetReplication(fs, path, replication);
   camlidl_free(_ctx);
@@ -823,7 +823,7 @@ value camlidl_hdfs_hdfsListDirectory(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   numEntries = &_c1;
   /* begin user-supplied calling sequence */
   _res = hdfsListDirectory(fs, path, numEntries);
@@ -855,7 +855,7 @@ value camlidl_hdfs_hdfsGetPathInfo(
   struct camlidl_ctx_struct _ctxs = { CAMLIDL_TRANSIENT, NULL };
   camlidl_ctx _ctx = &_ctxs;
   camlidl_ml2c_hdfs_hdfsFS(_v_fs, &fs, _ctx);
-  path = String_val(_v_path);
+  path = (char const *) String_val(_v_path);
   /* begin user-supplied calling sequence */
   _res = hdfsGetPathInfo(fs, path);
   if (NULL == _res) uerror("hdfsGetPathInfo", _v_path);
