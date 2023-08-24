@@ -18,6 +18,7 @@ depends: [
   "base-bytes"
   "base-unix"
   "camlidl"
+  "camlp-streams"
   "ocamlbuild" {build}
   "ocamlfind" {build & >= "1.5"}
 ]
